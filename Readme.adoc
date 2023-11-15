@@ -1,5 +1,19 @@
 = officectl
 
+---
+
+[IMPORTANT]
+====
+I worked on this project while at happn. +
+While there I had access to a bunch of directories and was able to test officectl on them.
+
+I’m not working at happn anymore! +
+While I’m fully committed on fixing issues and helping people who want to use officectl,
+ I won’t be able to be proactive about it for most of the directories currently supported.
+====
+
+---
+
 == REST API
 
 === Basics
