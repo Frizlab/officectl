@@ -102,7 +102,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_: Void) async throws {
+	public func onQueue_connect(_: Void) async throws {
 		/* As per the LDAP man, we single-thread the init...
 		 *
 		 * “Note: the first call into the LDAP library also initializes the global options for the library.
@@ -133,7 +133,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 			return (ldapPtr, nil)
 		}
 		
-		try await unqueuedDisconnect()
+		try await onQueue_disconnect()
 		assert(ldapPtr == nil)
 		
 		do {
@@ -167,12 +167,12 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 			
 			isConnected = true
 		} catch {
-			_ = try? await unqueuedDisconnect()
+			_ = try? await onQueue_disconnect()
 			throw error
 		}
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		guard ldapPtr != nil else {
 			assert(!isConnected)
 			return

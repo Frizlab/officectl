@@ -81,8 +81,8 @@ public actor SynologyConnector : Connector, Authenticator, HasTaskQueue {
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_ scope: Void) async throws {
-		try await unqueuedDisconnect()
+	public func onQueue_connect(_ scope: Void) async throws {
+		try await onQueue_disconnect()
 		
 		let request = TokenRequestBody(username: username, password: password)
 		let op = try URLRequestDataOperation<ApiResponse<TokenResponseBody>>.forAPIRequest(
@@ -105,14 +105,14 @@ public actor SynologyConnector : Connector, Authenticator, HasTaskQueue {
 		tokenInfo = TokenInfo(token: responseBody.sessionID)
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		guard isConnected else {
 			/* Nothing to do if we’re already disconnected. */
 			return
 		}
 		
 		let request = TokenRevokeRequestBody()
-		let urlRequest = try await unqueuedAuthenticate(request: urlRequestForEntryCGI(GETRequest: request))
+		let urlRequest = try await onQueue_authenticate(request: urlRequestForEntryCGI(GETRequest: request))
 		let op = URLRequestDataOperation<ApiResponse<Empty>>.forAPIRequest(urlRequest: urlRequest)
 		_ = try await op.startAndGetResult().result.get()
 		tokenInfo = nil
@@ -122,7 +122,7 @@ public actor SynologyConnector : Connector, Authenticator, HasTaskQueue {
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		/* Make sure we're connected. */
 		guard let tokenInfo else {
 			throw Err.notConnected

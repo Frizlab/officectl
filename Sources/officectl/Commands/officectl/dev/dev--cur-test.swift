@@ -11,6 +11,7 @@ import ArgumentParser
 import CollectionConcurrencyKit
 import Email
 import FormURLEncodedCoder
+import GlobalConfModule
 import JWT
 import UnwrapOrThrow
 import URLRequestOperation
@@ -43,8 +44,8 @@ struct Dev_CurTest : AsyncParsableCommand {
 			throw ExitCode(1)
 		}
 		
-		URLRequestOperationConfig.maxRequestBodySizeToLog = .max
-		URLRequestOperationConfig.maxResponseBodySizeToLog = .max
+		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.maxRequestBodySizeToLog] = .max
+		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.maxResponseBodySizeToLog] = .max
 		
 		let userIDs = try await emails.split(separator: ",").compactMap{ Email(rawValue: String($0)) }
 			.concurrentCompactMap{ email in

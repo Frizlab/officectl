@@ -62,8 +62,8 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 				return
 			}
 			
-			try await self.unqueuedDisconnect()
-			try await self.unqueuedConnect(Set(scope).union(currentScope ?? []))
+			try await self.onQueue_disconnect()
+			try await self.onQueue_connect(Set(scope).union(currentScope ?? []))
 		}
 	}
 	
@@ -71,7 +71,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_ scope: Authentication) async throws {
+	public func onQueue_connect(_ scope: Authentication) async throws {
 		let requestToken = { (grant: TokenRequestBody.Grant) async throws -> TokenInfo in
 			let request = TokenRequestBody(clientID: self.clientID, clientSecret: self.clientSecret, grant: grant, scope: scope)
 			let op = try URLRequestDataOperation<TokenResponseBody>.forAPIRequest(url: self.baseURL.appending("connect", "oauth", "token"), httpBody: request, retryProviders: [])
@@ -92,7 +92,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 				/* We should check the error and abort the connection depending on it.
 				 * For now (and probably forever), we do not care.
 				 * We do revoke the token if the refresh failed. */
-				try await unqueuedDisconnect()
+				try await onQueue_disconnect()
 			}
 		}
 		
@@ -101,7 +101,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 		tokenInfo = try await requestToken(.password(username: username, password: password))
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		guard let tokenInfo else {return}
 		
 		/* Code before URLRequestOperation v2 migration was making a GET.
@@ -119,7 +119,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		if let tokenInfo, tokenInfo.expirationDate < Date() + TimeInterval(30) {
 			/* If the token expires soon, we reauth it.
 			 * Clients should retry requests failing for expired token reasons, but let’s be proactive and allow a useless call.
@@ -131,7 +131,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 			 *
 			 * “-TimeInterval(45)”: "Rate-limiting" of the refresh of the token from request authentication to 1 per 45 seconds.
 			 * This avoids refreshing the token for each requests if the access token expires less than 45s after it is created. */
-			_ = try? await unqueuedRefreshToken(requestAuthDate: Date() - TimeInterval(45))
+			_ = try? await onQueue_refreshToken(requestAuthDate: Date() - TimeInterval(45))
 		}
 		
 		/* Make sure we're connected (_after_ potentially modifying the tokenInfo). */
@@ -186,10 +186,10 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 	   **************************************** */
 	
 	public func refreshToken(requestAuthDate: Date?) async throws {
-		try await executeOnTaskQueue{ try await self.unqueuedRefreshToken(requestAuthDate: requestAuthDate) }
+		try await executeOnTaskQueue{ try await self.onQueue_refreshToken(requestAuthDate: requestAuthDate) }
 	}
 	
-	private func unqueuedRefreshToken(requestAuthDate: Date?) async throws {
+	private func onQueue_refreshToken(requestAuthDate: Date?) async throws {
 		guard let scope = tokenInfo?.scope else {
 			throw Err.notConnected
 		}
@@ -197,7 +197,7 @@ public actor HappnConnector : Connector, Authenticator, HTTPAuthConnector, HasTa
 			/* The access auth has been changed _after_ the request was authenticated; we do not refresh the token (would probably be a double-refresh). */
 			return
 		}
-		try await unqueuedConnect(scope)
+		try await onQueue_connect(scope)
 	}
 	
 	/* ***************

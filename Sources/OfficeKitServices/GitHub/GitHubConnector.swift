@@ -52,8 +52,8 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_ auth: Void) async throws {
-		try await unqueuedDisconnect()
+	public func onQueue_connect(_ auth: Void) async throws {
+		try await onQueue_disconnect()
 		
 		let jwtPayloadEncoder = {
 			let encoder = JSONEncoder()
@@ -80,7 +80,7 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 		tokenInfo = TokenInfo(token: tokenResponse.token, expirationDate: tokenResponse.expiresAt)
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		/* We do nothing (apart from removing the token from memory).
 		 * The tokens we get from a connection operation are very short-lived.
 		 * AFAIK there are no possible way to explicitly revoke an installation token. */
@@ -91,7 +91,7 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		if let tokenInfo, tokenInfo.expirationDate < Date() + TimeInterval(30) {
 			/* If the token expires soon, we reauth it.
 			 * Clients should retry requests failing for expired token reasons, but let’s be proactive and allow a useless call.
@@ -103,7 +103,7 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 			 *
 			 * “-TimeInterval(45)”: "Rate-limiting" of the refresh of the token from request authentication to 1 per 45 seconds.
 			 * This avoids refreshing the token for each requests if the access token expires less than 45s after it is created. */
-			_ = try? await unqueuedRefreshToken(requestAuthDate: Date() - TimeInterval(45))
+			_ = try? await onQueue_refreshToken(requestAuthDate: Date() - TimeInterval(45))
 		}
 		
 		/* Make sure we're connected (_after_ potentially modifying the tokenInfo). */
@@ -122,10 +122,10 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   **************************************** */
 	
 	public func refreshToken(requestAuthDate: Date?) async throws {
-		try await executeOnTaskQueue{ try await self.unqueuedRefreshToken(requestAuthDate: requestAuthDate) }
+		try await executeOnTaskQueue{ try await self.onQueue_refreshToken(requestAuthDate: requestAuthDate) }
 	}
 	
-	private func unqueuedRefreshToken(requestAuthDate: Date?) async throws {
+	private func onQueue_refreshToken(requestAuthDate: Date?) async throws {
 		guard tokenInfo != nil else {
 			throw Err.notConnected
 		}
@@ -133,7 +133,7 @@ public actor GitHubConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 			/* The access auth has been changed _after_ the request was authenticated; we do not refresh the token (would probably be a double-refresh). */
 			return
 		}
-		try await unqueuedConnect(())
+		try await onQueue_connect(())
 	}
 	
 	/* ***************

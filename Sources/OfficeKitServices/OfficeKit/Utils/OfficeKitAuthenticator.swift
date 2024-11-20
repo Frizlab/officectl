@@ -28,7 +28,7 @@ public final actor OfficeKitAuthenticator : Authenticator, HasTaskQueue {
 		self.secret = secret
 	}
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		/* TODO one day, maybe: <https://datatracker.ietf.org/doc/draft-ietf-httpbis-message-signatures/>.
 		 * Note that at the time of writing this is still an active proposal. */
 		let validityEnd   = "\(Int((Date() + 9).timeIntervalSince1970))"

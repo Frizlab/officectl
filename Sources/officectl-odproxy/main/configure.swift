@@ -7,6 +7,7 @@
 
 import Foundation
 
+import GlobalConfModule
 import RetryingOperation
 import SemiSingleton
 import TOMLDecoder
@@ -25,8 +26,8 @@ func configure(_ app: Application, forcedConfigPath: String?, verbose: Bool) thr
 	SemiSingletonConfig.logger = app.logger
 	RetryingOperationConfig.oslog = nil
 	RetryingOperationConfig.logger = app.logger
-	URLRequestOperationConfig.oslog = nil
-	URLRequestOperationConfig.logger = app.logger
+	Conf[rootValueFor: \.urlRequestOperation.oslog] = nil
+	Conf[rootValueFor: \.urlRequestOperation.logger] = app.logger
 	
 	let dirs = try BaseDirectories(prefixAll: "officectl-odproxy", runtimeDirHandling: .skipSetup)
 	let configPath = try forcedConfigPath ?? dirs.findConfigFile("config.toml")?.string ?! MessageError(message: "Cannot find file config file path.")

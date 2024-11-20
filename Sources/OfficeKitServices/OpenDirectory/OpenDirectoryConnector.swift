@@ -102,8 +102,8 @@ public final actor OpenDirectoryConnector : Connector, HasTaskQueue {
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_: Void) async throws {
-		try await unqueuedDisconnect()
+	public func onQueue_connect(_: Void) async throws {
+		try await onQueue_disconnect()
 		
 		try await _node.perform{ wrappedNode in
 			let session = try ODSession(options: self.sessionOptions)
@@ -122,7 +122,7 @@ public final actor OpenDirectoryConnector : Connector, HasTaskQueue {
 		isConnected = true
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		isConnected = false
 		await _node.perform{ $0 = nil }
 	}

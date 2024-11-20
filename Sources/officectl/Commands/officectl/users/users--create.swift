@@ -54,14 +54,14 @@ struct Users_Create : AsyncParsableCommand {
 		let password = password ?? generateRandomPassword()
 		
 		let usersAndServicesResults = services.map{ s in
-			Result{
+			Result(catching: {
 				let u = try s.value.logicalUser(fromUser: HintsUser(properties: [
 					.emails: [email],
 					.firstName: firstName,
 					.lastName: lastName
 				]))
 				return UserAndServiceFrom(user: u, service: s.value)!
-			}
+			})
 		}
 		
 		var skippedSomeUsers = false

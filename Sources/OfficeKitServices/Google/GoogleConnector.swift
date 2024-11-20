@@ -62,8 +62,8 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 		
 		let scope = Set(scope).union(currentScope ?? [])
 		try await executeOnTaskQueue{
-			try await self.unqueuedDisconnect()
-			try await self.unqueuedConnect(scope)
+			try await self.onQueue_disconnect()
+			try await self.onQueue_connect(scope)
 		}
 	}
 	
@@ -71,8 +71,8 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_ scope: Set<String>) async throws {
-		try await unqueuedDisconnect()
+	public func onQueue_connect(_ scope: Set<String>) async throws {
+		try await onQueue_disconnect()
 		
 		let authURL = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
 		let requestBody = TokenRequestBody(
@@ -94,7 +94,7 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 		tokenInfo = TokenInfo(token: res.accessToken, expirationDate: Date(timeIntervalSinceNow: TimeInterval(res.expiresIn)), scope: scope)
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		guard let tokenInfo else {return}
 		
 		let op = try URLRequestDataOperation<TokenRevokeResponseBody>.forAPIRequest(url: URL(string: "https://accounts.google.com/o/oauth2/revoke")!, urlParameters: TokenRevokeRequestQuery(token: tokenInfo.token), retryProviders: [])
@@ -110,7 +110,7 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		if let tokenInfo, tokenInfo.expirationDate < Date() + TimeInterval(30) {
 			/* If the token expires soon, we reauth it.
 			 * Clients should retry requests failing for expired token reasons, but let’s be proactive and allow a useless call.
@@ -122,7 +122,7 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 			 *
 			 * “-TimeInterval(45)”: "Rate-limiting" of the refresh of the token from request authentication to 1 per 45 seconds.
 			 * This avoids refreshing the token for each requests if the access token expires less than 45s after it is created. */
-			_ = try? await unqueuedRefreshToken(requestAuthDate: Date() - TimeInterval(45))
+			_ = try? await onQueue_refreshToken(requestAuthDate: Date() - TimeInterval(45))
 		}
 		
 		/* Make sure we're connected (_after_ potentially modifying the tokenInfo). */
@@ -141,10 +141,10 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	   **************************************** */
 	
 	public func refreshToken(requestAuthDate: Date?) async throws {
-		try await executeOnTaskQueue{ try await self.unqueuedRefreshToken(requestAuthDate: requestAuthDate) }
+		try await executeOnTaskQueue{ try await self.onQueue_refreshToken(requestAuthDate: requestAuthDate) }
 	}
 	
-	private func unqueuedRefreshToken(requestAuthDate: Date?) async throws {
+	private func onQueue_refreshToken(requestAuthDate: Date?) async throws {
 		guard let scope = tokenInfo?.scope else {
 			throw Err.notConnected
 		}
@@ -152,7 +152,7 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 			/* The access auth has been changed _after_ the request was authenticated; we do not refresh the token (would probably be a double-refresh). */
 			return
 		}
-		try await unqueuedConnect(scope)
+		try await onQueue_connect(scope)
 	}
 	
 	/* ***************

@@ -72,8 +72,8 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 		
 		let scope = Set(scope).union(currentScope ?? [])
 		try await executeOnTaskQueue{
-			try await self.unqueuedDisconnect()
-			try await self.unqueuedConnect(scope)
+			try await self.onQueue_disconnect()
+			try await self.onQueue_connect(scope)
 		}
 	}
 	
@@ -81,8 +81,8 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 	   MARK: - Connector Implementation
 	   ******************************** */
 	
-	public func unqueuedConnect(_ scope: Set<String>) async throws {
-		try await unqueuedDisconnect()
+	public func onQueue_connect(_ scope: Set<String>) async throws {
+		try await onQueue_disconnect()
 		
 		let authURL = try URL(string: "https://login.microsoftonline.com")!.appending(tenantID, "oauth2", "v2.0", "token")
 		let tokenRequestGrant: TokenRequestBody.Grant
@@ -122,7 +122,7 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 		tokenInfo = TokenInfo(token: res.accessToken, expirationDate: Date(timeIntervalSinceNow: TimeInterval(res.expiresIn)), scope: scope)
 	}
 	
-	public func unqueuedDisconnect() async throws {
+	public func onQueue_disconnect() async throws {
 		/* So AFAICT there are no endpoints to revoke an access token for the M$ graph API.
 		 * Makes sense, it’s a JWT token.
 		 * Still a bold move though… */
@@ -133,7 +133,7 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		if let tokenInfo, tokenInfo.expirationDate < Date() + TimeInterval(30) {
 			/* If the token expires soon, we reauth it.
 			 * Clients should retry requests failing for expired token reasons, but let’s be proactive and allow a useless call.
@@ -145,7 +145,7 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 			 *
 			 * “-TimeInterval(45)”: "Rate-limiting" of the refresh of the token from request authentication to 1 per 45 seconds.
 			 * This avoids refreshing the token for each requests if the access token expires less than 45s after it is created. */
-			_ = try? await unqueuedRefreshToken(requestAuthDate: Date() - TimeInterval(45))
+			_ = try? await onQueue_refreshToken(requestAuthDate: Date() - TimeInterval(45))
 		}
 		
 		/* Make sure we're connected (_after_ potentially modifying the tokenInfo). */
@@ -164,10 +164,10 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 	   **************************************** */
 	
 	public func refreshToken(requestAuthDate: Date?) async throws {
-		try await executeOnTaskQueue{ try await self.unqueuedRefreshToken(requestAuthDate: requestAuthDate) }
+		try await executeOnTaskQueue{ try await self.onQueue_refreshToken(requestAuthDate: requestAuthDate) }
 	}
 	
-	private func unqueuedRefreshToken(requestAuthDate: Date?) async throws {
+	private func onQueue_refreshToken(requestAuthDate: Date?) async throws {
 		guard let scope = tokenInfo?.scope else {
 			throw Err.notConnected
 		}
@@ -175,7 +175,7 @@ public actor Office365Connector : Connector, Authenticator, HTTPAuthConnector, H
 			/* The access auth has been changed _after_ the request was authenticated; we do not refresh the token (would probably be a double-refresh). */
 			return
 		}
-		try await unqueuedConnect(scope)
+		try await onQueue_connect(scope)
 	}
 	
 	/* ***************

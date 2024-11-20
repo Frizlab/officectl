@@ -14,6 +14,7 @@ import SystemPackage
 
 import ArgumentParser
 import CLTLogger
+import GlobalConfModule
 import JSONLogger
 import Logging
 import OfficeModelCore
@@ -164,14 +165,14 @@ extension Officectl.Options {
 		}
 #if canImport(os)
 		RetryingOperationConfig.oslog = nil
-		URLRequestOperationConfig.oslog = nil
+		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.oslog] = nil
 #endif
 		RetryingOperationConfig.logger = nil
-		URLRequestOperationConfig.logger = Logger(label: "URLRequestOperation")
-		URLRequestOperationConfig.networkRetryProviderDefaultNumberOfRetries = 0
-		if URLRequestOperationConfig.logger?.logLevel == .trace {
-			URLRequestOperationConfig.maxRequestBodySizeToLog = 5 * 1024
-			URLRequestOperationConfig.maxResponseBodySizeToLog = 5 * 1024
+		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.logger] = Logger(label: "URLRequestOperation")
+		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.networkRetryProviderDefaultNumberOfRetries] = 0
+		if GlobalConfModule.Conf[\.urlRequestOperation.logger]?.logLevel == .trace {
+			GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.maxRequestBodySizeToLog] = 5 * 1024
+			GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.maxResponseBodySizeToLog] = 5 * 1024
 		}
 		
 		

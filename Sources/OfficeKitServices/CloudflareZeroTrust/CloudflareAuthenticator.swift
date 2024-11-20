@@ -29,7 +29,7 @@ public actor CloudflareAuthenticator : Authenticator, HasTaskQueue {
 	   MARK: - Authenticator Implementation
 	   ************************************ */
 	
-	public func unqueuedAuthenticate(request: URLRequest) async throws -> URLRequest {
+	public func onQueue_authenticate(request: URLRequest) async throws -> URLRequest {
 		/* Add the expected header to the request. */
 		var request = request
 		request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")

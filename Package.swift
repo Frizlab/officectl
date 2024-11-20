@@ -11,7 +11,7 @@ let commonSwiftSettings: [SwiftSetting] = [
 let coreDependencies: [Target.Dependency] = [
 	.product(name: "CollectionConcurrencyKit", package: "CollectionConcurrencyKit"),
 	.product(name: "Email",                    package: "swift-email"),
-	.product(name: "GenericJSON",              package: "generic-json-swift"),
+	.product(name: "GenericJSON",              package: "generic-json"),
 	.product(name: "Logging",                  package: "swift-log"),
 	.product(name: "OfficeModelCore",          package: "officectl-model"/*Xcode is not ready for this:, moduleAliases: ["OfficeModelCore": "ModelCore"]*/),
 	.product(name: "UnwrapOrThrow",            package: "UnwrapOrThrow")
@@ -81,20 +81,20 @@ let package = Package(
 #endif
 		ret.append(.package(url: "https://github.com/dduan/TOMLDecoder.git",                      from: "0.2.2"))
 		ret.append(.package(url: "https://github.com/Frizlab/APIConnectionProtocols.git",         from: "1.0.0-beta.6"))
+		ret.append(.package(url: "https://github.com/Frizlab/CollectionConcurrencyKit.git",       from: "0.2.0"))
+		ret.append(.package(url: "https://github.com/Frizlab/generic-json.git",                   from: "3.0.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/HasResult.git",                      from: "2.0.0"))
+		ret.append(.package(url: "https://github.com/Frizlab/HTTPCoders.git",                     from: "0.1.0"))
+		ret.append(.package(url: "https://github.com/Frizlab/officectl-model.git",                branch: "main"))
 		ret.append(.package(url: "https://github.com/Frizlab/OperationAwaiting.git",              from: "1.3.0-beta.1"))
 		ret.append(.package(url: "https://github.com/Frizlab/stream-reader.git",                  from: "3.5.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/swift-email.git",                    from: "0.2.5"))
 		ret.append(.package(url: "https://github.com/Frizlab/swift-xdg.git",                      from: "1.0.0-beta.1.0.1"))
+//		ret.append(.package(url: "https://github.com/Frizlab/RetryingOperation.git",              from: "1.1.7"))
+		ret.append(.package(url: "https://github.com/Frizlab/SemiSingleton.git",                  from: "2.1.0-beta.1"))
 		ret.append(.package(url: "https://github.com/Frizlab/UnwrapOrThrow.git",                  from: "1.0.0"))
-		ret.append(.package(url: "https://github.com/happn-app/CollectionConcurrencyKit.git",     from: "0.2.0"))
-		ret.append(.package(url: "https://github.com/happn-app/HTTPCoders.git",                   from: "0.1.0"))
-		ret.append(.package(url: "https://github.com/happn-app/officectl-model.git",              branch: "main"))
-//		ret.append(.package(url: "https://github.com/happn-app/RetryingOperation.git",            from: "1.1.7"))
-		ret.append(.package(url: "https://github.com/happn-app/SemiSingleton.git",                from: "2.1.0-beta.1"))
-		ret.append(.package(url: "https://github.com/happn-app/URLRequestOperation.git",          branch: "dev.final_operation"))
-		ret.append(.package(url: "https://github.com/happn-app/XibLoc.git",                       from: "1.3.0"))
-		ret.append(.package(url: "https://github.com/iwill/generic-json-swift.git",               from: "2.0.2"))
+		ret.append(.package(url: "https://github.com/Frizlab/URLRequestOperation.git",            branch: "develop"))
+		ret.append(.package(url: "https://github.com/Frizlab/XibLoc.git",                         from: "1.3.0"))
 		ret.append(.package(url: "https://github.com/mxcl/LegibleError.git",                      from: "1.0.0"))
 		ret.append(.package(url: "https://github.com/swift-server-community/SwiftPrometheus.git", from: "1.0.0"))
 //		ret.append(.package(url: "https://github.com/vapor/leaf.git",                             from: "4.2.0"))
@@ -138,7 +138,7 @@ let package = Package(
 			ret.append(.target(name: "OfficeKit"))
 			/* Dependencies for helpers and co. */
 			ret.append(.product(name: "Email",       package: "swift-email"))
-			ret.append(.product(name: "GenericJSON", package: "generic-json-swift"))
+			ret.append(.product(name: "GenericJSON", package: "generic-json"))
 			return ret
 		}()))
 		
@@ -237,7 +237,7 @@ let package = Package(
 		ret.append(.executableTarget(name: "officectl-odproxy", dependencies: [
 			.product(name: "CLTLogger",     package: "clt-logger"),
 			.product(name: "Crypto",        package: "swift-crypto"),
-			.product(name: "GenericJSON",   package: "generic-json-swift"),
+			.product(name: "GenericJSON",   package: "generic-json"),
 			.product(name: "JSONLogger",    package: "json-logger"),
 			.product(name: "JWT",           package: "jwt"),
 			.product(name: "LegibleError",  package: "LegibleError"),
