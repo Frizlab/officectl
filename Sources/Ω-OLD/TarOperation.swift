@@ -67,7 +67,7 @@ public class TarOperation : RetryingOperation {
 		process.waitUntilExit()
 		
 		guard process.terminationStatus == 0 else {
-			tarError = NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "tar exited with code \(process.terminationStatus) (sources: \(sources), destination: \(destinationPath))"])
+			tarError = NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "tar exited with code \(process.terminationStatus) (sources: \(sources), destination: \(destinationPath))"])
 			return
 		}
 		

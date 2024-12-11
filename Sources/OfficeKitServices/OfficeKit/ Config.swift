@@ -13,7 +13,7 @@ import Logging
 
 public enum OfficeKitOfficeConfig : Sendable {
 	
-	static public var logger: Logger? = Logger(label: "com.happn.officekit-services.officekit")
+	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.officekit")
 	
 }
 

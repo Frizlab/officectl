@@ -85,7 +85,7 @@ class RateLimiterOperation : RetryingOperation {
 		return true
 	}
 	
-	private static let countsQueue = DispatchQueue(label: "com.happn.officectl.ratelimiter_counts_queue")
+	private static let countsQueue = DispatchQueue(label: "me.frizlab.officectl.ratelimiter_counts_queue")
 	private static var counts = [String: [Date]]()
 	
 }

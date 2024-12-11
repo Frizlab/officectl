@@ -107,7 +107,7 @@ struct BackupGitHubCommand : AsyncParsableCommand {
 		}
 		
 		guard errors.count == 0 else {
-			throw NSError(domain: "com.happn.officectl", code: 3, userInfo: [NSLocalizedDescriptionKey: "Got the following errors while backing up the repositories" + errors.reduce("", { $0 + "\n   " + $1.legibleLocalizedDescription })])
+			throw NSError(domain: "me.frizlab.officectl", code: 3, userInfo: [NSLocalizedDescriptionKey: "Got the following errors while backing up the repositories" + errors.reduce("", { $0 + "\n   " + $1.legibleLocalizedDescription })])
 		}
 	}
 	

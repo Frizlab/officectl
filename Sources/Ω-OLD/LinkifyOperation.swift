@@ -41,7 +41,7 @@ public class LinkifyOperation : RetryingOperation {
 		options = []
 #endif
 		guard let e = FileManager.default.enumerator(at: folderURL, includingPropertiesForKeys: [.isDirectoryKey], options: options, errorHandler: handler) else {
-			throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot enumerate URL \(folderURL)"])
+			throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot enumerate URL \(folderURL)"])
 		}
 		
 		directoryEnumerator = e

@@ -24,11 +24,11 @@ class LogFile {
 		let fileExists = FileManager.default.fileExists(atPath: url.path)
 		/* Not sure the explicit file creation is needed… */
 		guard fileExists || FileManager.default.createFile(atPath: url.path, contents: nil, attributes: nil) else {
-			throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create log file"])
+			throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create log file"])
 		}
 		
 		guard let s = OutputStream(url: url, append: true) else {
-			throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create log file"])
+			throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create log file"])
 		}
 		s.open()
 		
@@ -56,13 +56,13 @@ class LogFile {
 			try data.withUnsafeBytes{ bytes in
 				let n = bytes.count
 				guard stream.write(bytes.bindMemory(to: UInt8.self).baseAddress!, maxLength: n) == n else {
-					throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to write to log file"])
+					throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Failed to write to log file"])
 				}
 			}
 		}
 	}
 	
-	private let syncQueue = DispatchQueue(label: "com.happn.officectl.logfilewritequeue")
+	private let syncQueue = DispatchQueue(label: "me.frizlab.officectl.logfilewritequeue")
 	private let stream: OutputStream
 	
 }

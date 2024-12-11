@@ -13,7 +13,7 @@ import Logging
 
 public enum CloudflareZeroTrustOfficeConfig : Sendable {
 	
-	static public var logger: Logger? = Logger(label: "com.happn.officekit-services.cloudflare-zerotrust")
+	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.cloudflare-zerotrust")
 	
 }
 

@@ -13,7 +13,7 @@ import Logging
 
 public enum VaultPKIOfficeConfig : Sendable {
 	
-	static public var logger: Logger? = Logger(label: "com.happn.officekit-services.vault-pki")
+	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.vault-pki")
 	
 }
 

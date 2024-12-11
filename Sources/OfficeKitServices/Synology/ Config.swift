@@ -13,7 +13,7 @@ import Logging
 
 public enum SynologyOfficeConfig : Sendable {
 	
-	static public var logger: Logger? = Logger(label: "com.happn.officekit-services.synology")
+	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.synology")
 	
 }
 

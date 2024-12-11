@@ -251,7 +251,7 @@ struct BackupMailsCommand : AsyncParsableCommand {
 			if let token = await connector.token, let expirationDate = await connector.expirationDate {
 				return (userAndDest, token, expirationDate)
 			} else {
-				throw NSError(domain: "com.happn.officectl", code: 42, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
+				throw NSError(domain: "me.frizlab.officectl", code: 42, userInfo: [NSLocalizedDescriptionKey: "Internal error"])
 			}
 		}
 		
@@ -323,7 +323,7 @@ struct BackupMailsCommand : AsyncParsableCommand {
 				cancelKillTimer()
 				
 				if process.terminationStatus != 0 {
-					throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "offlineimap exited with status \(process.terminationStatus)"])
+					throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "offlineimap exited with status \(process.terminationStatus)"])
 				}
 			} catch {
 				if runError == nil {runError = error}
@@ -346,7 +346,7 @@ struct BackupMailsCommand : AsyncParsableCommand {
 		private func createOfflineimapProcess() throws -> Process {
 			if let offlineimapOutputFileURL = offlineimapOutputFileURL {
 				guard FileManager.default.createFile(atPath: offlineimapOutputFileURL.path, contents: nil, attributes: nil) else {
-					throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create offlineimap output file"])
+					throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Cannot create offlineimap output file"])
 				}
 			}
 			
@@ -396,12 +396,12 @@ struct BackupMailsCommand : AsyncParsableCommand {
 		}
 		
 		private func interruptReceived() {
-			runError = NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "SIGINT received"])
+			runError = NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "SIGINT received"])
 			killOfflineimap(terminate: false)
 		}
 		
 		private func terminateReceived() {
-			runError = NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "SIGTERM received"])
+			runError = NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "SIGTERM received"])
 			killOfflineimap(terminate: true)
 		}
 		
@@ -428,11 +428,11 @@ struct BackupMailsCommand : AsyncParsableCommand {
 			console.info("Generating config for offlineimap")
 			
 			guard userInfos.count > 0 else {
-				throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "No access tokens…"])
+				throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "No access tokens…"])
 			}
 			
 			guard userInfos.keys.first(where: { $0.id == nil }) == nil else {
-				throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Got a user with no ID fetched!"])
+				throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "Got a user with no ID fetched!"])
 			}
 			
 			/* About maxsyncaccounts:

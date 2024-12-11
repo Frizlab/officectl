@@ -155,7 +155,7 @@ extension Officectl.Options {
 					return ret
 				}, metadataProvider: .init{ ["zz-date": "\(Date())"] })
 		}
-		storage.logger = Logger(label: "com.happn.officectl")
+		storage.logger = Logger(label: "me.frizlab.officectl")
 		
 		if verbose != nil && verbosity != nil {
 			logger.warning("Got both --verbose and --verbosity options. Ignoring --verbose.")

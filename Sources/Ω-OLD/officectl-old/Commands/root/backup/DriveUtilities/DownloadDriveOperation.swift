@@ -63,12 +63,12 @@ class DownloadDriveOperation : RetryingOperation {
 				
 				guard !gotErrorRetrievingFilesList else {
 					await state.status.updateStatus(for: state.userAndDest.user, { $0.gotErrorFindingFiles = true })
-					throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "There was an error retrieving the full list of files."])
+					throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "There was an error retrieving the full list of files."])
 				}
 				
 				let foundDownloadError = operations.contains(where: { $0.result.failureValue != nil })
 				guard !foundDownloadError else {
-					throw NSError(domain: "com.happn.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "At least one file was not successfully downloaded from drive \(state.userAndDest.user.userID.rawValue); see the log file for more info."])
+					throw NSError(domain: "me.frizlab.officectl", code: 1, userInfo: [NSLocalizedDescriptionKey: "At least one file was not successfully downloaded from drive \(state.userAndDest.user.userID.rawValue); see the log file for more info."])
 				}
 				
 				/* Archive backup if applicable. */
