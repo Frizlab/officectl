@@ -9,7 +9,7 @@ import Foundation
 
 
 
-struct VaultResponse<ObjectType : Decodable> : Decodable {
+struct VaultResponse<ObjectType : Decodable & Sendable> : Decodable, Sendable {
 	
 	var data: ObjectType
 	

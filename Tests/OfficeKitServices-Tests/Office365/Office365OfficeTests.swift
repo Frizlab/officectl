@@ -12,6 +12,7 @@ import CommonForOfficeKitServicesTests
 import Email
 import Logging
 import OfficeKit
+import SafeGlobal
 import URLRequestOperation
 
 @testable import Office365Office
@@ -29,7 +30,7 @@ final class Office365OfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(Office365ServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(Office365ServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: Office365Service!

@@ -9,6 +9,7 @@ import Foundation
 
 import Email
 import GenericJSON
+import GlobalConfModule
 import UnwrapOrThrow
 import URLRequestOperation
 

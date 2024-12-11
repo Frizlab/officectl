@@ -43,7 +43,7 @@ import VaultPKIOffice
 @main
 struct Officectl : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Manage multiple directories.",
 		subcommands: [
 			Users.self,
@@ -54,7 +54,7 @@ struct Officectl : AsyncParsableCommand {
 		]
 	)
 	
-	struct Options : ParsableArguments {
+	struct Options : ParsableArguments, Sendable {
 		
 		@Option(name: .long, help: "Override the log handler defined in the configuration.")
 		var logHandler: Conf.LogHandler?
@@ -99,7 +99,7 @@ struct Officectl : AsyncParsableCommand {
 		}
 		
 		fileprivate let storage = Storage()
-		fileprivate final class Storage {
+		fileprivate final class Storage : @unchecked Sendable /* We guarantee we’ll use it in a way where Sendability is not needed. */ {
 			/* None of these properties can be accessed before the bootstrap. */
 			
 			var conf: Conf?
@@ -164,10 +164,10 @@ extension Officectl.Options {
 			logger.error("Conf file not found. Continuing without services.")
 		}
 #if canImport(os)
-		RetryingOperationConfig.oslog = nil
+		GlobalConfModule.Conf[rootValueFor: \.retryingOperation.oslog] = nil
 		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.oslog] = nil
 #endif
-		RetryingOperationConfig.logger = nil
+		GlobalConfModule.Conf[rootValueFor: \.retryingOperation.logger] = nil
 		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.logger] = Logger(label: "URLRequestOperation")
 		GlobalConfModule.Conf[rootValueFor: \.urlRequestOperation.networkRetryProviderDefaultNumberOfRetries] = 0
 		if GlobalConfModule.Conf[\.urlRequestOperation.logger]?.logLevel == .trace {

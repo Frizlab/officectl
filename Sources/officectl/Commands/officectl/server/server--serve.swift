@@ -15,7 +15,7 @@ import OfficeServer
 
 struct Server_Serve : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "serve",
 		abstract: "Start the server."
 	)

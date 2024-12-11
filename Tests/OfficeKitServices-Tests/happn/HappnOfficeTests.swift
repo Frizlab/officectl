@@ -11,6 +11,7 @@ import XCTest
 import CommonForOfficeKitServicesTests
 import Email
 import OfficeKit
+import SafeGlobal
 import URLRequestOperation
 
 @testable import HappnOffice
@@ -29,7 +30,7 @@ final class HappnOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(HappnServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(HappnServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: HappnService!

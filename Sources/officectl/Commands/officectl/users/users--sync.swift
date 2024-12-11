@@ -17,7 +17,7 @@ import LDAPOffice
 
 struct Users_Sync : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "sync",
 		abstract: "Sync users from a given service to one or multiple services."
 	)
@@ -52,7 +52,7 @@ struct Users_Sync : AsyncParsableCommand {
 		let (users, fetchErrorsByService) = try await MultiServicesUser.fetchAll(
 			in: destinationServices.union([sourceService]),
 			includeSuspended: false,
-			customFetchFilter: { userAndService in
+			customFetchFilter: { [officectlOptions] userAndService in
 				let ignoredUsers = officectlOptions.ignoredUsersByServices[userAndService.serviceID] ?? []
 				return !ignoredUsers.contains(userAndService.taggedID.id)
 			}

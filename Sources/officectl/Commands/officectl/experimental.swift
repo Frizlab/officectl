@@ -13,7 +13,7 @@ import ArgumentParser
 
 struct Experimental : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Experimental commands; use with care.",
 		shouldDisplay: false,
 		subcommands: [

@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum OfficeKitOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct OfficeKitOffice {}
+	var officeKitOffice: OfficeKitOffice {OfficeKitOffice()}
+}
+
+
+extension ConfKeys.OfficeKitOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.officekit")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.officekit"))
 	
 }
 
-typealias Conf = OfficeKitOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.officeKitOffice.logger, Logging.Logger?.self)
+	
+}

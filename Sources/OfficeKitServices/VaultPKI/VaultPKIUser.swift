@@ -7,8 +7,10 @@
 
 import Foundation
 
-import X509
 import Email
+import GlobalConfModule
+import SafeGlobal
+import X509
 
 import OfficeKit
 
@@ -16,7 +18,7 @@ import OfficeKit
 
 public struct VaultPKIUser : User {
 	
-	public static var defaultCertificateValidityLength: TimeInterval = 365.2425 /* 1y */
+	@SafeGlobal public static var defaultCertificateValidityLength: TimeInterval = 365.2425 /* 1y */
 	
 	public typealias UserIDType = String
 	public typealias PersistentUserIDType = String

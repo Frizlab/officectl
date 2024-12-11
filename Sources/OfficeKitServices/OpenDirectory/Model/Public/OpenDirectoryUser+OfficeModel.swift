@@ -9,6 +9,7 @@ import Foundation
 import OpenDirectory
 
 import Email
+import GlobalConfModule
 import UnwrapOrThrow
 
 import OfficeKit

@@ -1,6 +1,5 @@
-// swift-tools-version:5.8
+// swift-tools-version:6.0
 import PackageDescription
-
 
 
 let commonSwiftSettings: [SwiftSetting] = [
@@ -12,9 +11,11 @@ let coreDependencies: [Target.Dependency] = [
 	.product(name: "CollectionConcurrencyKit", package: "CollectionConcurrencyKit"),
 	.product(name: "Email",                    package: "swift-email"),
 	.product(name: "GenericJSON",              package: "generic-json"),
+	.product(name: "GlobalConfModule",         package: "GlobalConfModule"),
 	.product(name: "Logging",                  package: "swift-log"),
 	.product(name: "OfficeModelCore",          package: "officectl-model"/*Xcode is not ready for this:, moduleAliases: ["OfficeModelCore": "ModelCore"]*/),
-	.product(name: "UnwrapOrThrow",            package: "UnwrapOrThrow")
+	.product(name: "SafeGlobal",               package: "SafeGlobal"),
+	.product(name: "UnwrapOrThrow",            package: "UnwrapOrThrow"),
 ]
 
 /* We do not use NIO http client. We probably should… */
@@ -22,7 +23,7 @@ let networkDependencies: [Target.Dependency] = [
 	.product(name: "HasResult",           package: "HasResult"),
 	.product(name: "FormURLEncodedCoder", package: "HTTPCoders"),
 	.product(name: "OperationAwaiting",   package: "OperationAwaiting"),
-	.product(name: "URLRequestOperation", package: "URLRequestOperation")
+	.product(name: "URLRequestOperation", package: "URLRequestOperation"),
 ]
 
 let ldapDependencies: [Target.Dependency] = {
@@ -83,6 +84,7 @@ let package = Package(
 		ret.append(.package(url: "https://github.com/Frizlab/APIConnectionProtocols.git",         from: "1.0.0-beta.6"))
 		ret.append(.package(url: "https://github.com/Frizlab/CollectionConcurrencyKit.git",       from: "0.2.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/generic-json.git",                   from: "3.0.0"))
+		ret.append(.package(url: "https://github.com/Frizlab/GlobalConfModule.git",               from: "0.4.1"))
 		ret.append(.package(url: "https://github.com/Frizlab/HasResult.git",                      from: "2.0.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/HTTPCoders.git",                     from: "0.1.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/officectl-model.git",                branch: "main"))
@@ -91,6 +93,7 @@ let package = Package(
 		ret.append(.package(url: "https://github.com/Frizlab/swift-email.git",                    from: "0.2.5"))
 		ret.append(.package(url: "https://github.com/Frizlab/swift-xdg.git",                      from: "1.0.0-beta.1.0.1"))
 //		ret.append(.package(url: "https://github.com/Frizlab/RetryingOperation.git",              from: "1.1.7"))
+		ret.append(.package(url: "https://github.com/Frizlab/SafeGlobal.git",                     from: "0.3.3"))
 		ret.append(.package(url: "https://github.com/Frizlab/SemiSingleton.git",                  from: "2.1.0-beta.1"))
 		ret.append(.package(url: "https://github.com/Frizlab/UnwrapOrThrow.git",                  from: "1.0.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/URLRequestOperation.git",            branch: "develop"))
@@ -270,6 +273,7 @@ let package = Package(
 /* *******
    MARK: -
    ******* */
+@MainActor
 func targetsForService(named name: String, folderName: String, additionalDependencies: [Target.Dependency] = [], additionalSwiftSettings: [SwiftSetting] = []) -> [Target] {
 	let commonServiceDependencies: [Target.Dependency] = [
 		.product(name: "APIConnectionProtocols", package: "APIConnectionProtocols"),

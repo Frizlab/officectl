@@ -12,6 +12,7 @@ import CommonForOfficeKitServicesTests
 import Email
 import Logging
 import OfficeKit
+import SafeGlobal
 import URLRequestOperation
 
 @testable import GoogleOffice
@@ -29,7 +30,7 @@ final class GoogleOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(GoogleServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(GoogleServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: GoogleService!

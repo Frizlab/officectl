@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum OpenDirectoryOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct OpenDirectoryOffice {}
+	var openDirectoryOffice: OpenDirectoryOffice {OpenDirectoryOffice()}
+}
+
+
+extension ConfKeys.OpenDirectoryOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.open-directory")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.open-directory"))
 	
 }
 
-typealias Conf = OpenDirectoryOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.openDirectoryOffice.logger, Logging.Logger?.self)
+	
+}

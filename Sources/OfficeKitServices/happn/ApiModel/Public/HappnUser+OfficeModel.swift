@@ -8,6 +8,7 @@
 import Foundation
 
 import Email
+import GlobalConfModule
 
 import CommonOfficePropertiesFromHappn
 import OfficeKit

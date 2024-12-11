@@ -16,7 +16,7 @@ import OfficeKit
 
 public final class VaultPKIService : UserService {
 	
-	public static var providerID = "happn/vault-pki"
+	public static let providerID = "happn/vault-pki"
 	
 	public typealias UserType = VaultPKIUser
 	

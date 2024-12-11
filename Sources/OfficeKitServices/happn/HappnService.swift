@@ -10,6 +10,7 @@ import Foundation
 import CollectionConcurrencyKit
 import Email
 import GenericJSON
+import GlobalConfModule
 import UnwrapOrThrow
 import URLRequestOperation
 
@@ -170,7 +171,7 @@ public final class HappnService : UserService {
 			/* Creating a user without a password is not possible.
 			 * Let’s generate a password!
 			 * A long and complex one. */
-			OfficeKitConfig.logger?.warning("Auto-generating a random password for happn user creation: creating a happn user w/o a password is not supported.")
+			Conf[\.officeKit.logger]?.warning("Auto-generating a random password for happn user creation: creating a happn user w/o a password is not supported.")
 			user.password = String.generatePassword()
 		}
 		

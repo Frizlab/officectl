@@ -13,7 +13,7 @@ import Vapor
 
 
 
-class VerifySignatureMiddleware : AsyncMiddleware {
+final class VerifySignatureMiddleware : AsyncMiddleware {
 	
 	struct SignatureURLPathPrefixTransform : Codable {
 		

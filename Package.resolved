@@ -1,4 +1,5 @@
 {
+  "originHash" : "70e5c12ebb52fc6c3b9f770a1b1a40eb2ebd4ea19cb5e2970f29a074cb7b6cd3",
   "pins" : [
     {
       "identity" : "apiconnectionprotocols",
@@ -86,8 +87,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/GlobalConfModule.git",
       "state" : {
-        "revision" : "4a45bd577bacbe95bf54587e15f796c2e64ea613",
-        "version" : "0.4.0"
+        "revision" : "2f1abd5058fffcb5cbbab68da9c4ca4f55d167da",
+        "version" : "0.4.1"
       }
     },
     {
@@ -194,8 +195,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/RetryingOperation.git",
       "state" : {
-        "revision" : "e635bf001fef0247f25dad1ed85ba369b0b46e4b",
-        "version" : "1.1.9"
+        "revision" : "033f46e7c4cf807c8dbfded3d16a1ba15982fc95",
+        "version" : "1.2.0"
       }
     },
     {
@@ -212,8 +213,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/SafeGlobal.git",
       "state" : {
-        "revision" : "4f64746ccc3a06e0c0b97ff1c572d9f7ef636206",
-        "version" : "0.3.1"
+        "revision" : "2af79f396b4097ead6209a0fb4eefcdbcea25b63",
+        "version" : "0.3.3"
       }
     },
     {
@@ -496,5 +497,5 @@
       }
     }
   ],
-  "version" : 2
+  "version" : 3
 }

@@ -17,7 +17,7 @@ import OfficeServer
 
 struct Server : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Interact with the server.",
 		subcommands: [
 //			Server_ProcessJobs.self, /* We do not have jobs. */

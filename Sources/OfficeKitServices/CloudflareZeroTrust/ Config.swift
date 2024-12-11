@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum CloudflareZeroTrustOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct CloudflareZeroTrustOffice {}
+	var cloudflareZeroTrustOffice: CloudflareZeroTrustOffice {CloudflareZeroTrustOffice()}
+}
+
+
+extension ConfKeys.CloudflareZeroTrustOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.cloudflare-zerotrust")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.cloudflare-zerotrust"))
 	
 }
 
-typealias Conf = CloudflareZeroTrustOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.cloudflareZeroTrustOffice.logger, Logging.Logger?.self)
+	
+}

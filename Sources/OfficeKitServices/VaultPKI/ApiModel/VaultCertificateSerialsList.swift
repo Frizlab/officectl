@@ -9,7 +9,7 @@ import Foundation
 
 
 
-struct VaultCertificateSerialsList : Decodable {
+struct VaultCertificateSerialsList : Decodable, Sendable {
 	
 	var keys: [String]
 	

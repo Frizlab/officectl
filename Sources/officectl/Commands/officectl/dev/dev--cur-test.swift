@@ -23,7 +23,7 @@ import OfficeKit
 
 struct Dev_CurTest : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "cur-test",
 		abstract: "The current test done by the dev. Definitely do not run this if you’re not the dev.",
 		shouldDisplay: false

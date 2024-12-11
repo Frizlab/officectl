@@ -12,7 +12,7 @@ import Email
 
 
 
-extension Email : ExpressibleByArgument {
+extension Email : @retroactive ExpressibleByArgument {
 	
 	public init?(argument: String) {
 		self.init(rawValue: argument)

@@ -10,8 +10,10 @@ import XCTest
 
 import CommonForOfficeKitServicesTests
 import Email
+import GlobalConfModule
 import Logging
 import OfficeKit
+import SafeGlobal
 
 @testable import LDAPOffice
 
@@ -28,7 +30,7 @@ final class LDAPOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(LDAPServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(LDAPServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: LDAPService!
@@ -38,8 +40,8 @@ final class LDAPOfficeTests : XCTestCase {
 	override class func setUp() {
 		bootstrapIfNeeded()
 		
-		LDAPOfficeConfig.logger = Logger(label: "test-ldap")
-		LDAPOfficeConfig.logger?.logLevel = .trace
+		Conf[rootValueFor: \.ldapOffice.logger] = Logger(label: "test-ldap")
+		Conf[rootValueFor: \.ldapOffice.logger]?.logLevel = .trace
 		confs = Result{
 			let ret: (LDAPServiceConfig, TestConf) = try parsedConf(for: "ldap")
 			if let path = ret.1.caCerts {

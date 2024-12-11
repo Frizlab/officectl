@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum LDAPOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct LDAPOffice {}
+	var ldapOffice: LDAPOffice {LDAPOffice()}
+}
+
+
+extension ConfKeys.LDAPOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.ldap")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.ldap"))
 	
 }
 
-typealias Conf = LDAPOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.ldapOffice.logger, Logging.Logger?.self)
+	
+}

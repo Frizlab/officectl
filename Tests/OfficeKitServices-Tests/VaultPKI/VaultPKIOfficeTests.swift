@@ -13,6 +13,7 @@ import SwiftASN1
 import CommonForOfficeKitServicesTests
 import Logging
 import OfficeKit
+import SafeGlobal
 import URLRequestOperation
 
 @testable import VaultPKIOffice
@@ -25,7 +26,7 @@ final class VaultPKIOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(VaultPKIServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(VaultPKIServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: VaultPKIService!

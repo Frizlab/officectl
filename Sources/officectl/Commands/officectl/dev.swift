@@ -13,7 +13,7 @@ import ArgumentParser
 
 struct Dev : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Dev commands; use with care, only if you know what you’re doing.",
 		shouldDisplay: false,
 		subcommands: [

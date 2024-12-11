@@ -36,7 +36,7 @@ func app(_ env: Environment) throws -> Application {
 		throw MessageError(message: "The --config-file or --verbose options can only be specified once. The config-file option requires an argument.")
 	}
 	
-	let factory: (Logger.Level) -> (String) -> LogHandler = {
+	let factory: @Sendable (Logger.Level) -> @Sendable (String) -> LogHandler = {
 		switch Environment.get("LOGGER") {
 			case "clt": return { level in
 				return { label in

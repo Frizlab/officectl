@@ -18,7 +18,7 @@ import OfficeModelCore
 
 struct Users_Create : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "create",
 		abstract: "Create a user."
 	)

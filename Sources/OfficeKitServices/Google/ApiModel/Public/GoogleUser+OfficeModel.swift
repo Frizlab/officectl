@@ -7,9 +7,11 @@
 
 import Foundation
 
-import CommonOfficePropertiesFromHappn
 import Crypto
 import Email
+import GlobalConfModule
+
+import CommonOfficePropertiesFromHappn
 import OfficeKit
 
 

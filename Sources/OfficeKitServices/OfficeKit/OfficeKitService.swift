@@ -9,6 +9,7 @@ import Foundation
 
 import Email
 import GenericJSON
+import GlobalConfModule
 import OfficeModelCore
 import OperationAwaiting
 import UnwrapOrThrow

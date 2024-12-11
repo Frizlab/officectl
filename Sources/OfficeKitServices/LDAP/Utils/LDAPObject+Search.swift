@@ -8,6 +8,7 @@
 import Foundation
 
 import COpenLDAP
+import GlobalConfModule
 
 import OfficeKit
 

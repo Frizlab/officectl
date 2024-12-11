@@ -11,6 +11,7 @@ import CollectionConcurrencyKit
 import Crypto
 import Email
 import GenericJSON
+import GlobalConfModule
 import Logging
 import OfficeModelCore
 
@@ -118,7 +119,7 @@ public final class GoogleService : UserService {
 			/* Creating a user without a password is not possible.
 			 * Let’s generate a password!
 			 * A long and complex one. */
-			OfficeKitConfig.logger?.warning("Auto-generating a random password for gougle user creation: creating a gougle user w/o a password is not supported.")
+			Conf[\.officeKit.logger]?.warning("Auto-generating a random password for gougle user creation: creating a gougle user w/o a password is not supported.")
 			let passwordProperty = UserProperty(rawValue: GoogleService.providerID + "/password")
 			let newPassword = String.generatePassword(allowedChars: "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789=?!@#$%^&*")
 			guard user.oU_setValue(newPassword, forProperty: passwordProperty, convertMismatchingTypes: false).isSuccessful else {

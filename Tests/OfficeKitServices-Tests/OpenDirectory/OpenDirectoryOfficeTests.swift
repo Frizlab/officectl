@@ -10,8 +10,10 @@ import XCTest
 
 import CommonForOfficeKitServicesTests
 import Email
+import GlobalConfModule
 import Logging
 import OfficeKit
+import SafeGlobal
 import UnwrapOrThrow
 import URLRequestOperation
 
@@ -30,7 +32,7 @@ final class OpenDirectoryOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(OpenDirectoryServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(OpenDirectoryServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: OpenDirectoryService!
@@ -40,8 +42,8 @@ final class OpenDirectoryOfficeTests : XCTestCase {
 	override class func setUp() {
 		bootstrapIfNeeded()
 		
-		OpenDirectoryOfficeConfig.logger = Logger(label: "test-od")
-		OpenDirectoryOfficeConfig.logger?.logLevel = .trace
+		Conf[rootValueFor: \.openDirectoryOffice.logger] = Logger(label: "test-od")
+		Conf[rootValueFor: \.openDirectoryOffice.logger]?.logLevel = .trace
 		
 		confs = Result{ try parsedConf(for: "od") }
 	}

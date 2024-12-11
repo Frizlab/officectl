@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum HappnOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct HappnOffice {}
+	var happnOffice: HappnOffice {HappnOffice()}
+}
+
+
+extension ConfKeys.HappnOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.happn")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.happn"))
 	
 }
 
-typealias Conf = HappnOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.happnOffice.logger, Logging.Logger?.self)
+	
+}

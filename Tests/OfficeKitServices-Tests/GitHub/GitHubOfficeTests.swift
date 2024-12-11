@@ -12,6 +12,7 @@ import CommonForOfficeKitServicesTests
 import Email
 import Logging
 import OfficeKit
+import SafeGlobal
 import URLRequestOperation
 
 @testable import GitHubOffice
@@ -31,7 +32,7 @@ final class GitHubOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(GitHubServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(GitHubServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: GitHubService!

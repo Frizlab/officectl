@@ -7,6 +7,8 @@
 
 import Foundation
 
+import SafeGlobal
+
 
 
 /**
@@ -24,6 +26,6 @@ public enum WeakeningMode : Sendable {
 	public static let alwaysInstantly = WeakeningMode.always(successDelay: nil, errorDelay: nil)
 	
 	/** Customizable default, used by Action, when running it. */
-	public static var defaultMode = WeakeningMode.alwaysInstantly
+	@SafeGlobal public static var defaultMode = WeakeningMode.alwaysInstantly
 	
 }

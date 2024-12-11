@@ -7,17 +7,22 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 import UnwrapOrThrow
 
 
 
-public enum GoogleOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct GoogleOffice {}
+	var googleOffice: GoogleOffice {GoogleOffice()}
+}
+
+
+extension ConfKeys.GoogleOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.google")
-	
-	/* Let’s use the config as a “globals container…” */
-	static let dateDecodingStrategy: JSONDecoder.DateDecodingStrategy = {
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.google"))
+	#declareConfKey("dateDecodingStrategy", JSONDecoder.DateDecodingStrategy.self, defaultValue: {
 		return .custom{ decoder in
 			let container = try decoder.singleValueContainer()
 			let str = try container.decode(String.self)
@@ -25,8 +30,14 @@ public enum GoogleOfficeConfig : Sendable {
 			formatter.formatOptions = formatter.formatOptions.union(.withFractionalSeconds)
 			return try formatter.date(from: str) ?! DecodingError.dataCorruptedError(in: container, debugDescription: "Invalid date: \(str)")
 		}
-	}()
+	}())
 	
 }
 
-typealias Conf = GoogleOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.googleOffice.logger,               Logging.Logger?                 .self)
+	#declareConfAccessor(\.googleOffice.dateDecodingStrategy, JSONDecoder.DateDecodingStrategy.self)
+	
+}

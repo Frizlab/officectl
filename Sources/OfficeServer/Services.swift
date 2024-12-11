@@ -7,7 +7,7 @@
 
 import Foundation
 
-import JWT
+@preconcurrency import JWT
 import Vapor
 
 import OfficeKit

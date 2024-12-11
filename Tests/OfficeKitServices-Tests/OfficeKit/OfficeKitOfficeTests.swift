@@ -10,7 +10,9 @@ import Foundation
 import XCTest
 
 import CommonForOfficeKitServicesTests
+import GlobalConfModule
 import Logging
+import SafeGlobal
 
 @testable import OfficeKitOffice
 
@@ -25,7 +27,7 @@ final class OfficeKitOfficeTests : XCTestCase {
 	}
 	
 	/* Parsed once for the whole test case. */
-	static var confs: Result<(OfficeKitServiceConfig, TestConf), Error>!
+	@SafeGlobal static var confs: Result<(OfficeKitServiceConfig, TestConf), Error>!
 	
 	/* A new instance of the service is created for each test. */
 	var service: OfficeKitService!
@@ -35,8 +37,8 @@ final class OfficeKitOfficeTests : XCTestCase {
 	override class func setUp() {
 		bootstrapIfNeeded()
 		
-		OfficeKitOfficeConfig.logger = Logger(label: "test-officekit")
-		OfficeKitOfficeConfig.logger?.logLevel = .trace
+		Conf[rootValueFor: \.officeKitOffice.logger] = Logger(label: "test-officekit")
+		Conf[rootValueFor: \.officeKitOffice.logger]?.logLevel = .trace
 		
 		confs = Result{ try parsedConf(for: "officekit") }
 	}

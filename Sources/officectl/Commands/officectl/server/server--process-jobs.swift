@@ -15,7 +15,7 @@ import OfficeServer
 
 struct Server_ProcessJobs : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "process-jobs",
 		abstract: "Start processing (non-scheduled) jobs in Vapor queues."
 	)

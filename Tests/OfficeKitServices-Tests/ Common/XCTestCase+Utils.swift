@@ -9,8 +9,10 @@ import Foundation
 import XCTest
 
 import CLTLogger
+import GlobalConfModule
 import Logging
 import RetryingOperation
+import SafeGlobal
 import StreamReader
 import URLRequestOperation
 
@@ -18,7 +20,7 @@ import URLRequestOperation
 
 public extension XCTestCase {
 	
-	static var hasBootstrapped = false
+	@SafeGlobal static var hasBootstrapped = false
 	static func bootstrapIfNeeded() {
 		guard !hasBootstrapped else {return}
 		defer {hasBootstrapped = true}
@@ -31,13 +33,13 @@ public extension XCTestCase {
 		}, metadataProvider: .init{ ["zz-date": "\(Date())"] })
 		
 #if canImport(os)
-		RetryingOperationConfig.oslog = nil
-		URLRequestOperationConfig.oslog = nil
+		Conf[rootValueFor: \.retryingOperation.oslog] = nil
+		Conf[rootValueFor: \.urlRequestOperation.oslog] = nil
 #endif
-		RetryingOperationConfig.logger = Logger(label: "RetryingOperation")
-		URLRequestOperationConfig.logger = Logger(label: "URLRequestOperation")
-		URLRequestOperationConfig.maxRequestBodySizeToLog = .max
-		URLRequestOperationConfig.maxResponseBodySizeToLog = .max
+		Conf[rootValueFor: \.retryingOperation.logger] = Logger(label: "RetryingOperation")
+		Conf[rootValueFor: \.urlRequestOperation.logger] = Logger(label: "URLRequestOperation")
+		Conf[rootValueFor: \.urlRequestOperation.maxRequestBodySizeToLog]  = .max
+		Conf[rootValueFor: \.urlRequestOperation.maxResponseBodySizeToLog] = .max
 	}
 	
 	static let testsDataPath = URL(fileURLWithPath: #file, isDirectory: false)

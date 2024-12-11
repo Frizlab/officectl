@@ -7,13 +7,16 @@
 
 import Foundation
 
+import SafeGlobal
+
 import OfficeModelCore
 
 
 
 public struct OfficeKitServices : Sendable {
 	
-	public static var providers = [String: OfficeService.Type]()
+	/* Maybe this should be in the config, using GlobalConfModule. */
+	@SafeGlobal public static var providers = [String: OfficeService.Type]()
 	
 	public var authService: (any AuthenticatorService)?
 	public var allServices = [Tag: any OfficeService]()

@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum SynologyOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct SynologyOffice {}
+	var synologyOffice: SynologyOffice {SynologyOffice()}
+}
+
+
+extension ConfKeys.SynologyOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.synology")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.synology"))
 	
 }
 
-typealias Conf = SynologyOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.synologyOffice.logger, Logging.Logger?.self)
+	
+}

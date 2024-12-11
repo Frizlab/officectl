@@ -13,5 +13,5 @@ import URLRequestOperation
 
 
 
-extension URLRequestDataOperation : HasResult, SendableOperation {}
-extension URLRequestDownloadOperation : HasResult, SendableOperation {}
+extension URLRequestDataOperation     : @retroactive HasResult, @retroactive SendableOperation {}
+extension URLRequestDownloadOperation : @retroactive HasResult, @retroactive SendableOperation {}

@@ -8,6 +8,7 @@
 import Foundation
 
 import APIConnectionProtocols
+import GlobalConfModule
 import TaskQueue
 
 import COpenLDAP
@@ -67,12 +68,13 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 	}
 	
 	deinit {
-		if ldapPtr != nil {
-			if ldap_unbind_ext_s(ldapPtr, nil, nil) != LDAP_SUCCESS {
-				Conf.logger?.warning("LEAKING ldap struct: ldap_unbind failed in connector deinit.")
-			}
-			ldapPtr = nil
-		}
+#warning("TODO: How to handle access to isolated ldapPtr here?")
+//		if ldapPtr != nil {
+//			if ldap_unbind_ext_s(ldapPtr, nil, nil) != LDAP_SUCCESS {
+//				Conf.logger?.warning("LEAKING ldap struct: ldap_unbind failed in connector deinit.")
+//			}
+//			ldapPtr = nil
+//		}
 	}
 	
 	/**
@@ -109,7 +111,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 		 *  As such the first call should be single-threaded or otherwise protected to insure that only one call is active.
 		 *  It is recommended that ldap_get_option() or ldap_set_option() be used in the program's main thread before any additional threads are created.
 		 *  See ldap_get_option(3).” */
-		let initBlock: @LDAPInitActor (URL, ProtocolVersion, Bool) -> (OpaquePointer?, Error?) = { ldapURL, version, startTLS in
+		let initBlock: @LDAPInitActor (URL, ProtocolVersion, Bool) -> sending (OpaquePointer?, Error?) = { ldapURL, version, startTLS in
 			let ldapPtr: OpaquePointer
 			var ldapPtrInit: OpaquePointer? = nil
 			let error = ldap_initialize(&ldapPtrInit, ldapURL.absoluteString)

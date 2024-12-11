@@ -13,7 +13,7 @@ import ArgumentParser
 
 struct Services : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Interact with services directly.",
 		subcommands: [
 			Services_List.self

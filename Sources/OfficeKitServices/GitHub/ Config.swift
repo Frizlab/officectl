@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum GitHubOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct GitHubOffice {}
+	var gitHubOffice: GitHubOffice {GitHubOffice()}
+}
+
+
+extension ConfKeys.GitHubOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.github")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.github"))
 	
 }
 
-typealias Conf = GitHubOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.gitHubOffice.logger, Logging.Logger?.self)
+	
+}

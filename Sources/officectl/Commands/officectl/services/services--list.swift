@@ -13,7 +13,7 @@ import ArgumentParser
 
 struct Services_List : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "list",
 		abstract: "List the services officectl knows about (from its configuration file)."
 	)

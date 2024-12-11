@@ -8,6 +8,8 @@
 import Foundation
 
 import Email
+import GlobalConfModule
+
 import OfficeKit
 
 

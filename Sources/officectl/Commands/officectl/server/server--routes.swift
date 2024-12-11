@@ -15,7 +15,7 @@ import OfficeServer
 
 struct Server_Routes : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		commandName: "routes",
 		abstract: "Show all the server’s routes."
 	)

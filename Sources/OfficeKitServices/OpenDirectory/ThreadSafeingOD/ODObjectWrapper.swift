@@ -16,9 +16,8 @@ internal final class ODObjectWrapper<ODObject> {
 	
 	var wrappedValue: ODObject?
 	
-	/* init can only be done with a nil value: otherwise it’d have to be an isolated init. */
 	nonisolated init() {
-		self.wrappedValue = nil
+		/* The init can only be done with the default wrapped value, otherwise it’d have to be an isolated init. */
 	}
 	
 	func perform<T : Sendable>(_ block: @ODActor @Sendable (inout ODObject?) throws -> T) rethrows -> T {

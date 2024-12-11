@@ -11,6 +11,7 @@ import CollectionConcurrencyKit
 import Crypto
 import Email
 import GenericJSON
+import GlobalConfModule
 import Logging
 import OfficeModelCore
 
@@ -139,7 +140,7 @@ public final class Office365Service : UserService {
 			/* Creating a user without a password is not possible.
 			 * Let’s generate a password!
 			 * A long and complex one. */
-			OfficeKitConfig.logger?.warning("Auto-generating a random password for M$ user creation: creating a M$ user w/o a password is not supported.")
+			Conf[\.officeKit.logger]?.warning("Auto-generating a random password for M$ user creation: creating a M$ user w/o a password is not supported.")
 			user.passwordProfile = .init(
 				forceChangePasswordNextSignIn: false,
 				forceChangePasswordNextSignInWithMfa: false,

@@ -55,7 +55,7 @@ public final class ActionExecutor<Action : ActionProtocol> : @unchecked Sendable
 	}
 	
 	deinit {
-//		OfficeKitConfig.logger?.debug("Deiniting a \(type(of: self))")
+//		Conf[\.officeKit.logger]?.debug("Deiniting a \(type(of: self))")
 	}
 	
 	/**
@@ -100,7 +100,7 @@ public final class ActionExecutor<Action : ActionProtocol> : @unchecked Sendable
 				/* If we’re running, let’s check whether the client wants to join the currently running action and be called when we’re done. */
 				if shouldJoinRunningAction(self.latestParameters!) {
 					if let h = handler {endHandlers.append(h)}
-					else               {/*OfficeKitConfig.logger?.warning("Asked to join a running action of type \(type(of: self)) for subject \(self.subject) but no handler given…")*/}
+					else               {/*Conf[\.officeKit.logger]?.warning("Asked to join a running action of type \(type(of: self)) for subject \(self.subject) but no handler given…")*/}
 					return (false, nil)
 				} else {
 					return (false, .failure(ActionError.actionIsAlreadyRunning))

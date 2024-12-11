@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum Office365OfficeConfig : Sendable {
+public extension ConfKeys {
+	struct Office365Office {}
+	var office365Office: Office365Office {Office365Office()}
+}
+
+
+extension ConfKeys.Office365Office {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.office365")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.office365"))
 	
 }
 
-typealias Conf = Office365OfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.office365Office.logger, Logging.Logger?.self)
+	
+}

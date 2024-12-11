@@ -13,5 +13,5 @@ import OfficeModel
 
 
 
-extension ApiService : Content {}
-extension ApiMultiServicesResults : Content {}
+extension ApiService              : @retroactive Content {}
+extension ApiMultiServicesResults : @retroactive Content {}

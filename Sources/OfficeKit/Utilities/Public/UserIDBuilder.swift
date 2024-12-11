@@ -29,7 +29,7 @@ public struct UserIDBuilder : Sendable, Codable {
 		self.format = format
 	}
 	
-	public func inferID(fromUser user: (any User)?, additionalVariables: [String: Any] = [:]) -> String? {
+	public func inferID(fromUser user: (any User)?, additionalVariables: [String: Sendable] = [:]) -> String? {
 		/*
 		 $var[,string[,transform]]$ -> Exact type expected. If the type is not defined, it’s string.
 		 |var[,string[,transform]]| -> Conversion allowed.
@@ -64,7 +64,7 @@ public struct UserIDBuilder : Sendable, Codable {
 		return ret
 	}
 	
-	private static func valueForVariableTransform(_ transformInfo: String, allowTypeConversion: Bool, user: (any User)?, additionalVariables: [String: Any]) throws -> String {
+	private static func valueForVariableTransform(_ transformInfo: String, allowTypeConversion: Bool, user: (any User)?, additionalVariables: [String: Sendable]) throws -> String {
 		/* First let’s parse the transform info.
 		 * Format is: variableName,expectedVariableType,transform1,transform2 where transforms are optional.
 		 * Escape char is the backslash (\). */

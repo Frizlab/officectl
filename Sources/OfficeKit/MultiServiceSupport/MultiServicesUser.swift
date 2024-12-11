@@ -7,6 +7,8 @@
 
 import Foundation
 
+import GlobalConfModule
+
 import OfficeModelCore
 
 
@@ -53,11 +55,11 @@ public extension MultiServicesUser {
 			res.merge(fetchedUsersAndErrors, uniquingKeysWith: { currentResult, newResult in
 				switch (currentResult, newResult) {
 					case (.success, .success):
-						OfficeKitConfig.logger?.error("Internal error: Got a user fetched twice. current result = \(currentResult), new result = \(newResult)")
+						Conf[\.officeKit.logger]?.error("Internal error: Got a user fetched twice. current result = \(currentResult), new result = \(newResult)")
 						return newResult
 						
 					case (.success, .failure):
-						OfficeKitConfig.logger?.error("Internal error: Got new failure for a result that was successfully fetched. current result = \(currentResult), new result = \(newResult)")
+						Conf[\.officeKit.logger]?.error("Internal error: Got new failure for a result that was successfully fetched. current result = \(currentResult), new result = \(newResult)")
 						return currentResult /* We keep the success… */
 						
 					case (.failure, .success):
@@ -73,7 +75,7 @@ public extension MultiServicesUser {
 			 * We estimate that if there was a fetch failure for a given service, there is no need to try again. */
 			let servicesToFetch = services.filter{ service in
 				guard let result = res[service] else {
-					OfficeKitConfig.logger?.error("Internal error: Got a service which has no result, that should not be possible. service = \(service)")
+					Conf[\.officeKit.logger]?.error("Internal error: Got a service which has no result, that should not be possible. service = \(service)")
 					return true
 				}
 				return (result.failureValue?.errors.last as? Err)?.isCannotInferUserIDFromOtherUser ?? false
@@ -157,7 +159,7 @@ public extension MultiServicesUser {
 			for userAndService in usersAndServices {
 				let taggedID = userAndService.taggedID
 				guard linkedUsersByTaggedIDBuilding[taggedID] == nil else {
-					OfficeKitConfig.logger?.warning("UserAndService found more than once in merge request; keeping only one (randomly)...", metadata: ["user_and_service": "\(userAndService)"])
+					Conf[\.officeKit.logger]?.warning("UserAndService found more than once in merge request; keeping only one (randomly)...", metadata: ["user_and_service": "\(userAndService)"])
 					continue
 				}
 				linkedUsersByTaggedIDBuilding[taggedID] = LinkedUser(userAndService: userAndService)
@@ -172,7 +174,7 @@ public extension MultiServicesUser {
 		for (_, linkedUser) in linkedUsersByTaggedID {
 			for service in services {
 				guard let logicallyLinkedTaggedIDs = try? service.value.allLogicalTaggedIDs(fromOtherUser: linkedUser.userAndService.user) else {
-//					OfficeKitConfig.logger?.debug("Error finding logically linked user IDs with: {\n  source service ID: \(currentUserServiceID)\n  dest service ID:\(serviceID)\n  source user pair: \(linkedUser.userAndService)\n}")
+//					Conf[\.officeKit.logger]?.debug("Error finding logically linked user IDs with: {\n  source service ID: \(currentUserServiceID)\n  dest service ID:\(serviceID)\n  source user pair: \(linkedUser.userAndService)\n}")
 					continue
 				}
 				let logicallyLinkedLinkedUsers = logicallyLinkedTaggedIDs.compactMap{ linkedUsersByTaggedID[$0] }
@@ -193,7 +195,7 @@ public extension MultiServicesUser {
 			treatedUsersAndServices.formUnion(linkedUser.linkedUsersSameService.map(\.userAndService.taggedID))
 			
 			guard allowNonValidServices || validServices.contains(where: { $0.value.id == taggedID.tag }) else {
-				OfficeKitConfig.logger?.info("Not adding UserAndService \(taggedID) in multi-user because it doesn’t have an explicitly-declared-valid service")
+				Conf[\.officeKit.logger]?.info("Not adding UserAndService \(taggedID) in multi-user because it doesn’t have an explicitly-declared-valid service")
 				return nil
 			}
 			

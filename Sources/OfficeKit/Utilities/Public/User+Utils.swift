@@ -6,7 +6,7 @@ import GenericJSON
 
 public extension User {
 	
-	func oU_valueForProperty(_ property: UserProperty) -> Any? {
+	func oU_valueForProperty(_ property: UserProperty) -> Sendable? {
 		switch property {
 			case .id:           return oU_id
 			case .persistentID: return oU_persistentID

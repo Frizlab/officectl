@@ -79,7 +79,7 @@ struct ASN1TBSCertList : DERImplicitlyTaggable, Sendable {
 	
 	struct RevokedCertificate : DERImplicitlyTaggable, Sendable {
 		
-		static var defaultIdentifier: SwiftASN1.ASN1Identifier = .sequence
+		static let defaultIdentifier: SwiftASN1.ASN1Identifier = .sequence
 		
 		var userCertificate: Certificate.SerialNumber
 		var revocationDate: ASN1Time

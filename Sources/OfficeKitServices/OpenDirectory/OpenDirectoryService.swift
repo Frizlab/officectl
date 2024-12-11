@@ -10,6 +10,7 @@ import OpenDirectory
 
 import Email
 import GenericJSON
+import GlobalConfModule
 import Logging
 import OfficeModelCore
 import UnwrapOrThrow

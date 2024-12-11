@@ -14,7 +14,7 @@ import Email
 
 struct Users : AsyncParsableCommand {
 	
-	static var configuration = CommandConfiguration(
+	static let configuration = CommandConfiguration(
 		abstract: "Manage the users.",
 		subcommands: [
 			Users_Create.self,

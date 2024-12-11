@@ -26,9 +26,9 @@ public actor GoogleConnector : Connector, Authenticator, HTTPAuthConnector, HasT
 	public typealias Request = URLRequest
 	public typealias Authentication = Set<String>
 	
-	public let userBehalf: String?
-	public let privateKey: RSAKey
-	public let superuserEmail: String
+	public nonisolated let userBehalf: String?
+	public nonisolated let privateKey: RSAKey
+	public nonisolated let superuserEmail: String
 	
 	public var isConnected:  Bool         {tokenInfo != nil}
 	public var accessToken:  String?      {tokenInfo?.token}

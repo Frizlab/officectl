@@ -7,14 +7,26 @@
 
 import Foundation
 
+import GlobalConfModule
 import Logging
 
 
 
-public enum VaultPKIOfficeConfig : Sendable {
+public extension ConfKeys {
+	struct VaultPKIOffice {}
+	var vaultPKIOffice: VaultPKIOffice {VaultPKIOffice()}
+}
+
+
+extension ConfKeys.VaultPKIOffice {
 	
-	static public var logger: Logger? = Logger(label: "me.frizlab.officekit-services.vault-pki")
+	#declareConfKey("logger", Logging.Logger?.self, defaultValue: .init(label: "me.frizlab.officekit-services.vault-pki"))
 	
 }
 
-typealias Conf = VaultPKIOfficeConfig
+
+extension Conf {
+	
+	#declareConfAccessor(\.vaultPKIOffice.logger, Logging.Logger?.self)
+	
+}
