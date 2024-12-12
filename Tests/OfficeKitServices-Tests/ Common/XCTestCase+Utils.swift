@@ -42,7 +42,7 @@ public extension XCTestCase {
 		Conf[rootValueFor: \.urlRequestOperation.maxResponseBodySizeToLog] = .max
 	}
 	
-	static let testsDataPath = URL(fileURLWithPath: #file, isDirectory: false)
+	static let testsDataPath = URL(fileURLWithPath: #filePath, isDirectory: false)
 		.deletingLastPathComponent()
 		.deletingLastPathComponent()
 		.deletingLastPathComponent()
