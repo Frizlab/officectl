@@ -389,6 +389,15 @@
       }
     },
     {
+      "identity" : "swift-prometheus",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-server/swift-prometheus.git",
+      "state" : {
+        "revision" : "0d4bb1b93f3f8e1025c6f149a06ede0a075f7916",
+        "version" : "1.0.2"
+      }
+    },
+    {
       "identity" : "swift-service-context",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/apple/swift-service-context.git",
@@ -431,15 +440,6 @@
       "state" : {
         "revision" : "d6183353dacd2747fb0ed71e2d49c09676987b98",
         "version" : "1.0.0"
-      }
-    },
-    {
-      "identity" : "swiftprometheus",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/swift-server-community/SwiftPrometheus.git",
-      "state" : {
-        "revision" : "0d4bb1b93f3f8e1025c6f149a06ede0a075f7916",
-        "version" : "1.0.2"
       }
     },
     {
