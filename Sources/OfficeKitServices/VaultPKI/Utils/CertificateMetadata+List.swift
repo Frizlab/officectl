@@ -76,13 +76,8 @@ extension CertificateMetadata {
 			
 			let subjectDN = try LDAPDistinguishedName(string: certificateResponse.data.certificate.subject.description)
 			
-			func asn1AnyToString(_ obj: ASN1Any?) -> String? {
-				if let str = (obj.flatMap{ try? ASN1UTF8String(     asn1Any: $0) }).flatMap(String.init) {return str}
-				if let str = (obj.flatMap{ try? ASN1PrintableString(asn1Any: $0) }).flatMap(String.init) {return str}
-				return nil
-			}
 			guard let cnAttributeValue = (certificateResponse.data.certificate.subject.compactMap{ $0.filter{ $0.type == .RDNAttributeType.commonName }.onlyElement }.onlyElement?.value),
-					let subjectCN = asn1AnyToString(cnAttributeValue)
+					let subjectCN = String(cnAttributeValue)
 			else {
 				throw Err.foundInvalidCertificateWithNoUnambiguousCNInDN(dn: subjectDN)
 			}

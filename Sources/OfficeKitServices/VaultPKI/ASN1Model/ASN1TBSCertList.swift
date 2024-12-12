@@ -105,7 +105,7 @@ struct ASN1TBSCertList : DERImplicitlyTaggable, Sendable {
 				return .init(
 					userCertificate: Certificate.SerialNumber(bytes: cert),
 					revocationDate: date,
-					crlEntryExtensions: Certificate.Extensions(extensions: exts ?? [])
+					crlEntryExtensions: try Certificate.Extensions(exts ?? [])
 				)
 			})
 		}
@@ -196,7 +196,7 @@ struct ASN1TBSCertList : DERImplicitlyTaggable, Sendable {
 				thisUpdate: thisUpdate,
 				nextUpdate: nextUpdate,
 				revokedCertificates: revokedCertificates,
-				crlExtensions: Certificate.Extensions(extensions: exts ?? [])
+				crlExtensions: try Certificate.Extensions(exts ?? [])
 			)
 		})
 	}

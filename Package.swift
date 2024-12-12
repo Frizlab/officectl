@@ -69,9 +69,9 @@ let package = Package(
 	}(),
 	dependencies: {
 		var ret = [Package.Dependency]()
-		ret.append(.package(url: "https://github.com/apple/swift-asn1.git",                 from: "0.7.0"))
+		ret.append(.package(url: "https://github.com/apple/swift-asn1.git",                 from: "1.3.0"))
 		ret.append(.package(url: "https://github.com/apple/swift-argument-parser.git",      from: "1.1.0"))
-		ret.append(.package(url: "https://github.com/apple/swift-certificates.git",         from: "0.1.0"))
+		ret.append(.package(url: "https://github.com/apple/swift-certificates.git",         from: "1.6.1"))
 		ret.append(.package(url: "https://github.com/apple/swift-collections.git",          from: "1.0.4"))
 		ret.append(.package(url: "https://github.com/apple/swift-crypto.git",               from: "2.1.0"))
 		ret.append(.package(url: "https://github.com/apple/swift-log.git",                  from: "1.4.0"))
