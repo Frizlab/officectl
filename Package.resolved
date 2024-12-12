@@ -1,5 +1,5 @@
 {
-  "originHash" : "70e5c12ebb52fc6c3b9f770a1b1a40eb2ebd4ea19cb5e2970f29a074cb7b6cd3",
+  "originHash" : "d68f70e0c1714419cab522329819ebecff684b58e96d1616f49f08d050fe85b5",
   "pins" : [
     {
       "identity" : "apiconnectionprotocols",
@@ -492,8 +492,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/Frizlab/XibLoc.git",
       "state" : {
-        "revision" : "dd9372c902d04e4559b469da9bdaf0de3ae21fb5",
-        "version" : "1.3.1"
+        "revision" : "79468d8c314158b4fd3779bc35603f1227e4cac6",
+        "version" : "1.5.0"
       }
     }
   ],
