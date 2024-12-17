@@ -147,7 +147,7 @@ struct ASN1TBSCertList : DERImplicitlyTaggable, Sendable {
 				throw ASN1Error.invalidASN1Object(reason: "Invalid version \(version!) for CRL")
 			}
 			let signature = try ASN1AlgorithmIdentifier(derEncoded: &nodes)
-			let issuer = try DistinguishedName(derEncoded: &nodes)
+			let issuer = try DistinguishedName.derEncoded(&nodes)
 			let thisUpdate = try ASN1Time(derEncoded: &nodes)
 			let nextUpdate: ASN1Time?
 			do                                                            {nextUpdate = try ASN1Time(derEncoded: &nodes)}
@@ -221,6 +221,21 @@ struct ASN1TBSCertList : DERImplicitlyTaggable, Sendable {
 				})
 			}
 		})
+	}
+	
+}
+
+
+/* This is straight from swift-certificates code.
+ * <https://github.com/apple/swift-certificates/blob/5fd806333136f6e53f62a8067b06f25ddf784047/Sources/X509/DistinguishedName.swift#L197> */
+extension DistinguishedName {
+	
+	static func derEncoded(_ sequenceNodeIterator: inout ASN1NodeCollection.Iterator) throws -> DistinguishedName {
+		/* This is a workaround for the fact that, even though the conformance to DERImplicitlyTaggable is deprecated,
+		 *  Swift still prefers calling init(derEncoded:withIdentifier:) instead of this one. */
+		let dnFactory: (inout ASN1NodeCollection.Iterator) throws -> DistinguishedName =
+		DistinguishedName.init(derEncoded:)
+		return try dnFactory(&sequenceNodeIterator)
 	}
 	
 }
