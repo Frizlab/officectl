@@ -1,10 +1,8 @@
-//
 /*
- * File.swift
- * 
+ * CBridge.swift
+ * LDAPOffice
  *
  * Created by François Lamboley on 2023/01/07.
- * 
  */
 
 import Foundation
