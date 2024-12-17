@@ -67,16 +67,6 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 		self.auth = auth
 	}
 	
-	deinit {
-#warning("TODO: How to handle access to isolated ldapPtr here?")
-//		if ldapPtr != nil {
-//			if ldap_unbind_ext_s(ldapPtr, nil, nil) != LDAP_SUCCESS {
-//				Conf.logger?.warning("LEAKING ldap struct: ldap_unbind failed in connector deinit.")
-//			}
-//			ldapPtr = nil
-//		}
-	}
-	
 	/**
 	 Lets the client communicate directly with the LDAP.
 	 Use the pointer inside the block only, do **not** store it!
@@ -88,7 +78,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 		guard let ldapPtr else {
 			throw Err.notConnected
 		}
-		return try communicationBlock(ldapPtr)
+		return try communicationBlock(ldapPtr.value)
 	}
 	
 	public func connectIfNeeded() async throws {
@@ -140,7 +130,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 		
 		do {
 			let (ldapPtrOptional, initError) = await initBlock(ldapURL, version, startTLS)
-			ldapPtr = ldapPtrOptional
+			ldapPtr = ldapPtrOptional.map(LDAPPointerContainer.init)
 			
 			guard let ldapPtr, initError == nil else {
 				throw initError ?? Err.internalError
@@ -161,7 +151,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 					/* TODO: <https://twitter.com/CodaFi_/status/1362671988171370496>
 					 * > Cursed LDAP fact of the day: ldap_sasl_bind(_s) sends a BIND request with the credentials given and nothing more. SASL I/O is not actually installed on the channel even if the bind succeeds. You pretty much always want ldap_sasl_interactive_bind_s - which’ll handle multi-step too.
 					 * > Why is this cursed? Well, you can (mis)use ldap_sasl_bind(_s) to pretty easily send anonymous - and often cleartext if you forget to instal SSL on the channel - binds. If you hit an old enough install of Active Directory, it just might let you in too! */
-					let r = ldap_sasl_bind_s(ldapPtr, username, nil, &cred, nil, nil, nil)
+					let r = ldap_sasl_bind_s(ldapPtr.value, username, nil, &cred, nil, nil, nil)
 					guard r == LDAP_SUCCESS else {
 						throw OpenLDAPError(code: r)
 					}
@@ -180,11 +170,7 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 			return
 		}
 		
-		let r = ldap_unbind_ext_s(ldapPtr, nil, nil)
-		guard r == LDAP_SUCCESS else {
-			throw OpenLDAPError(code: r)
-		}
-		
+		try ldapPtr?.unbind()
 		isConnected = false
 		ldapPtr = nil
 	}
@@ -196,6 +182,6 @@ public final actor LDAPConnector : Connector, HasTaskQueue {
 	/** Technically public because it fulfill the HasTaskQueue requirement, but should not be used directly. */
 	public var _taskQueue = TaskQueue()
 	
-	private var ldapPtr: OpaquePointer? /* “LDAP*”; Cannot use the LDAP type (not exported to Swift, because opaque in C headers...) */
+	private var ldapPtr: LDAPPointerContainer?
 	
 }
