@@ -149,7 +149,7 @@ extension Officectl.Options {
 				
 			case .cltLogger:
 				LoggingSystem.bootstrap({ label, metadataProvider in
-					var ret = CLTLogger(fd: !logToStdout ? .standardError : .standardOutput, multilineMode: .allMultiline, metadataProvider: metadataProvider)
+					var ret = CLTLogger(fileHandle: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
 					ret.metadata = ["zz-label": "\(label)"] /* Note: CLTLogger does not use the label by default so we add it in the metadata. */
 					ret.logLevel = resolvedLogLevel
 					return ret

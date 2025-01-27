@@ -26,11 +26,10 @@ public extension XCTestCase {
 		defer {hasBootstrapped = true}
 		
 		LoggingSystem.bootstrap({ label, metadataProvider in
-			var ret = CLTLogger(multilineMode: .allMultiline, metadataProvider: metadataProvider)
-			ret.metadata = ["zz-label": "\(label)"]
+			var ret = CLTLogger.initWithLabelAndDateMetadata(label: label)
 			ret.logLevel = .trace
 			return ret
-		}, metadataProvider: .init{ ["zz-date": "\(Date())"] })
+		}, metadataProvider: nil)
 		
 #if canImport(os)
 		Conf[rootValueFor: \.retryingOperation.oslog] = nil

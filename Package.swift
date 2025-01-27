@@ -107,7 +107,7 @@ let package = Package(
 //		ret.append(.package(url: "https://github.com/vapor/fluent-sqlite-driver.git",       from: "4.0.0"))
 		ret.append(.package(url: "https://github.com/vapor/jwt.git",                        from: "4.2.0"))
 //		ret.append(.package(url: "https://github.com/vapor/console-kit.git",                from: "4.5.0"))
-		ret.append(.package(url: "https://github.com/xcode-actions/clt-logger.git",         from: "0.5.1"))
+		ret.append(.package(url: "https://github.com/xcode-actions/clt-logger.git",         from: "1.0.0-rc"))
 #if !os(Linux)
 		/* On macOS we use a custom-made xcframework to avoid the deprecation warnings macOS has added on OpenLDAP (they say to use OpenDirectory, but it’s a lie). */
 		ret.append(.package(url: "https://github.com/xcode-actions/COpenSSL.git",           from: "1.1.111"))

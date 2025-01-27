@@ -40,8 +40,7 @@ func app(_ env: Environment) throws -> Application {
 		switch Environment.get("LOGGER") {
 			case "clt": return { level in
 				return { label in
-					var ret = CLTLogger(multilineMode: .allMultiline, metadataProvider: .init{ ["zz-date": "\(Date())"] })
-					ret.metadata = ["zz-label": "\(label)"] /* Note: CLTLogger does not use the label by default so we add it in the metadata. */
+					var ret = CLTLogger.initWithLabelAndDateMetadata(label: label)
 					ret.logLevel = level
 					return ret
 				}
