@@ -149,11 +149,14 @@ extension Officectl.Options {
 				
 			case .cltLogger:
 				LoggingSystem.bootstrap({ label, metadataProvider in
-					var ret = CLTLogger(fileHandle: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
+					var ret = CLTLogger(
+						fileHandle: !logToStdout ? .standardError : .standardOutput,
+						metadataProvider: .init{ ["zz-date": "\(Date())"].merging(metadataProvider?.get() ?? [:], uniquingKeysWith: { _, new in new }) }
+					)
 					ret.metadata = ["zz-label": "\(label)"] /* Note: CLTLogger does not use the label by default so we add it in the metadata. */
 					ret.logLevel = resolvedLogLevel
 					return ret
-				}, metadataProvider: .init{ ["zz-date": "\(Date())"] })
+				}, metadataProvider: nil)
 		}
 		storage.logger = Logger(label: "me.frizlab.officectl")
 		
