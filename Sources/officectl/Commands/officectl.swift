@@ -139,25 +139,27 @@ extension Officectl.Options {
 		
 		/* *** LOGGER *** */
 		/* We log using clt logger by default because this program is a CLT and can be used directly in a Terminal. */
-		switch logHandler ?? conf?.logHandler ?? .cltLogger {
-			case .jsonLogger:
-				LoggingSystem.bootstrap({ label, metadataProvider in
-					var ret = JSONLogger(label: label, fd: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
-					ret.logLevel = resolvedLogLevel
-					return ret
-				}, metadataProvider: nil)
-				
-			case .cltLogger:
-				LoggingSystem.bootstrap({ label, metadataProvider in
-					var ret = CLTLogger(
-						fileHandle: !logToStdout ? .standardError : .standardOutput,
-						metadataProvider: .init{ ["zz-date": "\(Date())"].merging(metadataProvider?.get() ?? [:], uniquingKeysWith: { _, new in new }) }
-					)
-					ret.metadata = ["zz-label": "\(label)"] /* Note: CLTLogger does not use the label by default so we add it in the metadata. */
-					ret.logLevel = resolvedLogLevel
-					return ret
-				}, metadataProvider: nil)
-		}
+		let factory: @Sendable (String, Logger.MetadataProvider?) -> LogHandler =
+			switch logHandler ?? conf?.logHandler ?? .cltLogger {
+				case .jsonLogger:
+					{ label, metadataProvider in
+						var ret = JSONLogger(label: label, fd: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
+						ret.logLevel = resolvedLogLevel
+						return ret
+					}
+					
+				case .cltLogger:
+					{ label, metadataProvider in
+						var ret = CLTLogger(
+							fileHandle: !logToStdout ? .standardError : .standardOutput,
+							metadataProvider: .init{ ["zz-date": "\(Date())"].merging(metadataProvider?.get() ?? [:], uniquingKeysWith: { _, new in new }) }
+						)
+						ret.metadata = ["zz-label": "\(label)"] /* Note: CLTLogger does not use the label by default so we add it in the metadata. */
+						ret.logLevel = resolvedLogLevel
+						return ret
+					}
+			}
+		LoggingSystem.bootstrap(factory, metadataProvider: nil)
 		storage.logger = Logger(label: "me.frizlab.officectl")
 		
 		if verbose != nil && verbosity != nil {
