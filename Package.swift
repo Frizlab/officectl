@@ -171,6 +171,8 @@ let package = Package(
 			name: "OfficeServer",
 			dependencies: {
 				var ret = [Target.Dependency]()
+				ret.append(.target(name: "OfficeKit"))
+				ret.append(.target(name: "VaultPKIOffice"))
 				ret.append(.product(name: "JWT",                package: "jwt"))
 				ret.append(.product(name: "Metrics",            package: "swift-metrics"))
 				ret.append(.product(name: "OfficeModel",        package: "officectl-model"))
