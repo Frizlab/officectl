@@ -22,8 +22,8 @@ import OpenDirectoryOffice
 
 
 func configure(_ app: Application, forcedConfigPath: String?, verbose: Bool) throws {
-	SemiSingletonConfig.oslog = nil
-	SemiSingletonConfig.logger = app.logger
+	Conf[rootValueFor: \.semiSingleton.oslog] = nil
+	Conf[rootValueFor: \.semiSingleton.logger] = app.logger
 	Conf[rootValueFor: \.retryingOperation.oslog] = nil
 	Conf[rootValueFor: \.retryingOperation.logger] = app.logger
 	Conf[rootValueFor: \.urlRequestOperation.oslog] = nil

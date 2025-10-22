@@ -43,7 +43,7 @@ let ldapDependencies: [Target.Dependency] = {
 let package = Package(
 	name: "officectl",
 	platforms: [
-		.macOS(.v12)
+		.macOS(.v13)
 	],
 	products: {
 		var ret = [Product]()
@@ -97,7 +97,7 @@ let package = Package(
 		ret.append(.package(url: "https://github.com/Frizlab/SemiSingleton.git",            from: "2.1.0-beta.1"))
 		ret.append(.package(url: "https://github.com/Frizlab/UnwrapOrThrow.git",            from: "1.0.0"))
 		ret.append(.package(url: "https://github.com/Frizlab/URLRequestOperation.git",      branch: "develop"))
-		ret.append(.package(url: "https://github.com/Frizlab/XibLoc.git",                   from: "1.3.0"))
+		ret.append(.package(url: "https://github.com/Frizlab/XibLoc.git",                   from: "1.5.1-beta"))
 		ret.append(.package(url: "https://github.com/mxcl/LegibleError.git",                from: "1.0.0"))
 		ret.append(.package(url: "https://github.com/swift-server/swift-prometheus.git",    from: "1.0.0"))
 //		ret.append(.package(url: "https://github.com/vapor/leaf.git",                       from: "4.2.0"))
