@@ -34,8 +34,8 @@ final class UserIDBuilderTests : XCTestCase {
 	}
 	
 	func testUserIDBuilder4() throws {
-		let user = try SimpleUser1(oU_id: DistinguishedName(string: "uid=francois.lamboley,ou=people,dc=happn,dc=com"), oU_firstName: "François", oU_lastName: "Lamboley")
-		let builder = UserIDBuilder(format: "?id:uid?@happn.fr")
+		let user = try SimpleUser1(oU_id: LDAPDistinguishedName(string: "uid=francois.lamboley,ou=people,dc=happn,dc=com"), oU_firstName: "François", oU_lastName: "Lamboley")
+		let builder = UserIDBuilder(format: "$id,dn,extract:uid$@happn.fr")
 		XCTAssertEqual(builder.inferID(fromUser: user), "francois.lamboley@happn.fr")
 	}
 	
