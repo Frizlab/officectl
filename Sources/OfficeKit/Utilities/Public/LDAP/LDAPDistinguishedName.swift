@@ -12,7 +12,8 @@ import Foundation
 /* RFC: <https://www.ietf.org/rfc/rfc4514.txt>
  * The RFC is not fully followed…
  * I know Multi-valued RDN are not supported.
- * There are probably other cases that do not correctly implement the RFC. */
+ * There are probably other cases that do not correctly implement the RFC.
+ * We should also include an “RFC 1779” mode to be able to properly parse values in ASN.1 certifs. */
 public struct LDAPDistinguishedName : Sendable {
 	
 	public static func +(_ left: LDAPDistinguishedName, _ right: LDAPDistinguishedName) -> LDAPDistinguishedName {
