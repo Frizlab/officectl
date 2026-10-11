@@ -143,7 +143,7 @@ extension Officectl.Options {
 			switch logHandler ?? conf?.logHandler ?? .cltLogger {
 				case .jsonLogger:
 					{ label, metadataProvider in
-						var ret = JSONLogger(label: label, fd: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
+						var ret = JSONLogger(label: label, fileHandle: !logToStdout ? .standardError : .standardOutput, metadataProvider: metadataProvider)
 						ret.logLevel = resolvedLogLevel
 						return ret
 					}
